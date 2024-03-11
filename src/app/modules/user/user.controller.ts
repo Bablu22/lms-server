@@ -143,7 +143,8 @@ const updateAccessAndRefreshToken: RequestHandler = catchAsync(
 )
 
 const getMe: RequestHandler = catchAsync(async (req, res) => {
-  const user = req.user
+  const id = req.user._id
+  const user = await userService.getUserById(id)
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -153,7 +154,7 @@ const getMe: RequestHandler = catchAsync(async (req, res) => {
 })
 
 const getUserById: RequestHandler = catchAsync(async (req, res) => {
-  const user = await userService.getUserById(req)
+  const user = await userService.getUserById(req.params.id)
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -187,7 +188,7 @@ const socialAuth: RequestHandler = catchAsync(async (req, res) => {
     expires: new Date(Date.now() + 15 * 60 * 1000), // 15 minutes
     httpOnly: true,
     maxAge: 15 * 60 * 1000, // 15 minutes
-    sameSite: 'lax',
+    sameSite: 'lax', // lax
   })
 
   sendResponse(res, {
@@ -204,7 +205,7 @@ const updatePassword: RequestHandler = catchAsync(async (req, res) => {
     result._id.toString(),
     JSON.stringify(result),
     'EX',
-    7 * 24 * 60 * 60,
+    7 * 24 * 60 * 60, // 7 days
   )
   sendResponse(res, {
     success: true,
@@ -220,7 +221,7 @@ const updateProfile: RequestHandler = catchAsync(async (req, res) => {
     result._id.toString(),
     JSON.stringify(result),
     'EX',
-    7 * 24 * 60 * 60,
+    7 * 24 * 60 * 60, // 7 days
   )
   sendResponse(res, {
     success: true,

@@ -105,10 +105,9 @@ const userLogin = async (req: Request) => {
   }
 }
 
-const getUserById = async (req: Request) => {
+const getUserById = async (id: string) => {
   try {
-    const id = req.params.id
-    const user = await User.findById(id)
+    const user = await User.findById(id).populate('courses.courseId')
     if (!user) {
       throw new AppError(httpStatus.NOT_FOUND, 'User not found')
     }

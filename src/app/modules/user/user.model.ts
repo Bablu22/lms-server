@@ -43,9 +43,14 @@ const userSchema = new Schema<TUser, TUserModel>(
     },
     courses: [
       {
+        _id: false,
         courseId: {
           type: Schema.Types.ObjectId,
           ref: 'Course',
+        },
+        purchasedAt: {
+          type: Date,
+          default: Date.now,
         },
       },
     ],
