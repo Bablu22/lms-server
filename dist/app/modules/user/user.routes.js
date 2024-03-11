@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.userRoutes = void 0;
+const express_1 = require("express");
+const user_controller_1 = require("./user.controller");
+const validate_request_1 = __importDefault(require("../../middleware/validate-request"));
+const user_validation_1 = require("./user.validation");
+const auth_1 = require("../../middleware/auth");
+const saveImageToCloudinart_1 = require("../../utils/saveImageToCloudinart");
+const router = (0, express_1.Router)();
+router.post('/send-varification-token', (0, validate_request_1.default)(user_validation_1.userVarificationSchema), user_controller_1.userController.sendVarificationToken);
+router.post('/register', (0, validate_request_1.default)(user_validation_1.registerUserSchema), user_controller_1.userController.registerUser);
+router.post('/login', (0, validate_request_1.default)(user_validation_1.loginUserSchema), user_controller_1.userController.loginUser);
+router.get('/logout', auth_1.auth, user_controller_1.userController.logoutUser);
+router.get('/refresh-token', user_controller_1.userController.updateAccessAndRefreshToken);
+router.get('/me', auth_1.auth, user_controller_1.userController.getMe);
+router.get('/user/:id', auth_1.auth, user_controller_1.userController.getUserById);
+router.post('/social-auth', user_controller_1.userController.socialAuth);
+router.put('/update-password', auth_1.auth, (0, validate_request_1.default)(user_validation_1.changePasswordSchema), user_controller_1.userController.updatePassword);
+router.put('/update-profile', auth_1.auth, saveImageToCloudinart_1.upload.single('avatar'), user_controller_1.userController.updateProfile);
+exports.userRoutes = router;
