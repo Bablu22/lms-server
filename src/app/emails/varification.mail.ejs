@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Verification</title>
+  </head>
+  <body>
+    <div
+      style="
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      "
+    >
+      <h2 style="color: #333">Account Verification</h2>
+      <p>Dear <%= name %>,</p>
+      <p>
+        Thank you for creating an account with us. To complete the verification
+        process, please use the following code:
+      </p>
+      <div
+        style="
+          background-color: #f5f5f5;
+          padding: 10px;
+          border-radius: 5px;
+          margin-bottom: 20px;
+        "
+      >
+        <h3 style="margin: 0; font-size: 24px; color: #333; text-align: center">
+          <%= code %>
+        </h3>
+      </div>
+      <p>This code will expire in 5 minutes for security reasons.</p>
+      <p>If you did not create an account with us, please ignore this email.</p>
+      <p>
+        Best regards,<br />
+        LMS Team
+      </p>
+    </div>
+  </body>
+</html>
