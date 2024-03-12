@@ -164,10 +164,78 @@ const createPurchaseCourse = async (req: Request) => {
   }
 }
 
+const createQuestion = async (req: Request) => {
+  try {
+    const courseId = req.params.id
+    const course = await Course.findById(courseId)
+    if (!course) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Course not found')
+    }
+    const { question, contentId } = req.body
+
+    const courseData = course.courseData.find(
+      (item: any) => item._id.toString() === contentId,
+    )
+    if (!courseData) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Course data not found')
+    }
+    courseData.questions.push({
+      content: question,
+      user: req.user,
+      createdAt: new Date(),
+    })
+    await course.save()
+    return question
+  } catch (error: any) {
+    throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, error)
+  }
+}
+
+const repliesQuestion = async (req: Request) => {
+  try {
+    const courseId = req.params.id
+    const course = await Course.findById(courseId)
+    if (!course) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Course not found')
+    }
+    const { question, contentId, questionId } = req.body
+
+    const courseData = course.courseData.find(
+      (item: any) => item._id.toString() === contentId,
+    )
+    if (!courseData) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Course data not found')
+    }
+    const questionData = courseData.questions.find(
+      (item: any) => item._id.toString() === questionId,
+    )
+    if (!questionData) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Question not found')
+    }
+
+    if (!questionData.replies) {
+      questionData.replies = []
+    }
+
+    questionData.replies.push({
+      content: question,
+      user: req.user,
+      createdAt: new Date(),
+    })
+
+    await course.save()
+    return question
+  } catch (error: any) {
+    throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, error)
+  }
+}
+
 export const courseService = {
   createCourse,
   editCourse,
   getSingleCourse,
   getAllCourses,
   createPurchaseCourse,
+  createQuestion,
+  repliesQuestion,
 }

@@ -1,14 +1,20 @@
-import { TUser } from '../user/user.interface'
+import { JwtPayload } from 'jsonwebtoken'
 
-export interface IComment {
-  user: TUser
+export interface IQuestionReply {
+  user: JwtPayload
   content: string
   createdAt: Date
 }
+export interface IQuestion {
+  user: JwtPayload
+  content: string
+  createdAt: Date
+  replies?: IQuestionReply[]
+}
 
-export interface IReview extends IComment {
+export interface IReview extends IQuestion {
   rating: number
-  commentReplies: IComment[]
+  commentReplies: IQuestion[]
 }
 
 export interface ILink {
@@ -30,7 +36,7 @@ export interface ICourseData {
   videoPlayer: string
   links: ILink[]
   suggestions: string[]
-  questions: IComment[]
+  questions: IQuestion[]
 }
 
 export interface IBenefit {

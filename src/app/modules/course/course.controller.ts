@@ -59,10 +59,34 @@ const createPurchaseCourse: RequestHandler = catchAsync(async (req, res) => {
   })
 })
 
+const createQuestion: RequestHandler = catchAsync(async (req, res) => {
+  const question = await courseService.createQuestion(req)
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Question created successfully',
+    data: question,
+  })
+})
+
+const repliesQuestion: RequestHandler = catchAsync(async (req, res) => {
+  const question = await courseService.repliesQuestion(req)
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Question replied successfully',
+    data: question,
+  })
+})
+
 export const courseController = {
   createCourse,
   editCourse,
   getSilgleCourse,
   getAllCourses,
   createPurchaseCourse,
+  createQuestion,
+  repliesQuestion,
 }

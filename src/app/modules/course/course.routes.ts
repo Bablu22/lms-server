@@ -27,4 +27,8 @@ router.get('/:id', courseController.getSilgleCourse)
 router.get('/', courseController.getAllCourses)
 router.post('/purchase/:id', auth, courseController.createPurchaseCourse)
 
+// Questions
+router.post('/question/:id', auth, courseController.createQuestion)
+router.post('/question/reply/:id', auth, courseController.repliesQuestion)
+
 export const courseRoutes = router

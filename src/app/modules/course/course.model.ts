@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 import {
   IBenefit,
-  IComment,
   ICourse,
   ICourseData,
   ILink,
@@ -13,17 +12,23 @@ import {
 // Define Mongoose schema types
 const { ObjectId } = Schema.Types
 
-// Define Mongoose schema for IComment interface
-const CommentSchema = new Schema<IComment>({
+const QuestionReplySchema = new Schema({
   user: { type: ObjectId, ref: 'User', required: true },
   content: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+})
+
+const QuestioSchema = new Schema({
+  user: { type: ObjectId, ref: 'User', required: true },
+  content: { type: String, required: true },
+  replies: [QuestionReplySchema],
   createdAt: { type: Date, default: Date.now },
 })
 
 // Define Mongoose schema for IReview interface
 const ReviewSchema = new Schema<IReview>({
   rating: { type: Number, required: true },
-  commentReplies: [CommentSchema],
+  commentReplies: [QuestioSchema],
 })
 
 // Define Mongoose schema for ILink interface
@@ -48,7 +53,7 @@ const CourseDataSchema = new Schema<ICourseData>({
   videoPlayer: { type: String, required: true },
   links: [LinkSchema],
   suggestions: [String],
-  questions: [CommentSchema],
+  questions: [QuestioSchema],
 })
 
 // Define Mongoose schema for IBenefit interface
